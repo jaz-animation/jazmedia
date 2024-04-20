@@ -28,10 +28,20 @@ const logout = async () => {
 }
 
 const userProfileList = [
+  { type: 'divider' },
+  {
+    type: 'navItem',
+    icon: 'tabler-user',
+    title: 'Profile',
+    to: {
+      name: 'apps-user-view-id',
+      params: { id: 21 },
+    },
+  },
   {
     type: 'navItem',
     icon: 'tabler-settings',
-    title: 'Account',
+    title: 'Settings',
     to: {
       name: 'pages-account-settings-tab',
       params: { tab: 'account' },
@@ -49,6 +59,19 @@ const userProfileList = [
       color: 'error',
       content: '3',
     },
+  },
+  { type: 'divider' },
+  {
+    type: 'navItem',
+    icon: 'tabler-currency-dollar',
+    title: 'Pricing',
+    to: { name: 'pages-pricing' },
+  },
+  {
+    type: 'navItem',
+    icon: 'tabler-help-circle',
+    title: 'FAQ',
+    to: { name: 'pages-faq' },
   },
   { type: 'divider' },
   {

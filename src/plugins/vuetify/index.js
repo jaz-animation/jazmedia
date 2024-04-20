@@ -1,9 +1,12 @@
 import { deepMerge } from '@antfu/utils'
+import { useI18n } from 'vue-i18n'
 import { createVuetify } from 'vuetify'
 import { VBtn } from 'vuetify/components/VBtn'
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n'
 import defaults from './defaults'
 import { icons } from './icons'
 import { staticPrimaryColor, themes } from './theme'
+import { getI18n } from '@/plugins/i18n/index'
 
 // Styles
 import { cookieRef } from '@/@layouts/stores/config'
@@ -36,6 +39,9 @@ export default function (app) {
     defaults,
     icons,
     theme: optionTheme,
+    locale: {
+      adapter: createVueI18nAdapter({ i18n: getI18n(), useI18n }),
+    },
   })
 
   app.use(vuetify)
