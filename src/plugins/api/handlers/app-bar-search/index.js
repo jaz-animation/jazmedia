@@ -1,6 +1,6 @@
+import { db } from '@db/app-bar-search/db'
 import is from '@sindresorhus/is'
 import { rest } from 'msw'
-import { db } from '@db/app-bar-search/db'
 
 export const handlerAppBarSearch = [
   // Get Search Items
