@@ -1,3 +1,4 @@
+import { $fetchTable } from '@/utils/api'
 import avatar1 from '@images/avatars/avatar-1.png'
 import avatar2 from '@images/avatars/avatar-2.png'
 import avatar3 from '@images/avatars/avatar-3.png'
@@ -16,6 +17,15 @@ import twitterLabel from '@images/icons/project-icons/twitter.png'
 import vueLabel from '@images/icons/project-icons/vue.png'
 import xdLabel from '@images/icons/project-icons/xd.png'
 import UserProfileHeaderBg from '@images/pages/user-profile-header-bg.png'
+
+$fetchTable('user')
+  .then(projectData => {
+    console.log(projectData)
+  })
+  .catch(error => {
+    console.error('Terjadi kesalahan:', error)
+  })
+
 
 export const db = {
   data: {

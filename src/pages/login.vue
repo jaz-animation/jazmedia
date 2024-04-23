@@ -1,6 +1,5 @@
 <!-- ❗Errors in the form are set on line 60 -->
 <script setup>
-import { VForm } from 'vuetify/components/VForm'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
@@ -11,6 +10,7 @@ import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
+import { VForm } from 'vuetify/components/VForm'
 
 const authThemeImg = useGenerateImageVariant(authV2LoginIllustrationLight, authV2LoginIllustrationDark, authV2LoginIllustrationBorderedLight, authV2LoginIllustrationBorderedDark, true)
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
@@ -28,25 +28,25 @@ const router = useRouter()
 const ability = useAbility()
 
 const errors = ref({
-  email: undefined,
+  username: undefined,
   password: undefined,
 })
 
 const refVForm = ref()
 
 const credentials = ref({
-  email: 'admin@demo.com',
-  password: 'admin',
+  username: 'hijaz',
+  password: 'semangka',
 })
 
 const rememberMe = ref(false)
 
 const login = async () => {
   try {
-    const res = await $api('/auth/login', {
+    const res = await $api('/login', {
       method: 'POST',
       body: {
-        email: credentials.value.email,
+        username: credentials.value.username,
         password: credentials.value.password,
       },
       onResponseError({ response }) {
@@ -54,7 +54,16 @@ const login = async () => {
       },
     })
 
-    const { accessToken, userData, userAbilityRules } = res
+    const accessToken = res
+
+    const userData = credentials.value.username
+
+    const userAbilityRules = [
+      {
+        action: 'manage',
+        subject: 'all',
+      },
+    ]
 
     useCookie('userAbilityRules').value = userAbilityRules
     ability.update(userAbilityRules)
@@ -129,11 +138,8 @@ const onSubmit = () => {
             color="primary"
             variant="tonal"
           >
-            <p class="text-sm mb-2">
-              Admin Email: <strong>admin@demo.com</strong> / Pass: <strong>admin</strong>
-            </p>
             <p class="text-sm mb-0">
-              Client Email: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
+              Client username: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
             </p>
           </VAlert>
         </VCardText>
@@ -143,16 +149,16 @@ const onSubmit = () => {
             @submit.prevent="onSubmit"
           >
             <VRow>
-              <!-- email -->
+              <!-- username -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="credentials.email"
-                  label="Email"
-                  placeholder="johndoe@email.com"
-                  type="email"
+                  v-model="credentials.username"
+                  label="Username"
+                  placeholder="johndoe@username.com"
+                  type="text"
                   autofocus
-                  :rules="[requiredValidator, emailValidator]"
-                  :error-messages="errors.email"
+                  :rules="[requiredValidator]"
+                  :error-messages="errors.username"
                 />
               </VCol>
 

@@ -8,11 +8,8 @@ export const redirects = [
     redirect: to => {
       // TODO: Get type from backend
       const userData = useCookie('userData')
-      const userRole = userData.value?.role
-      if (userRole === 'admin')
+      if (userData)
         return { name: 'pages-user-profile-tab', params: { tab: 'profile' } }
-      if (userRole === 'client')
-        return { name: 'pages-account-settings-tab', params: { tab: 'account' } }
       
       return { name: 'login', query: to.query }
     },

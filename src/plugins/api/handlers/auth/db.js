@@ -18,8 +18,8 @@ export const db = {
     {
       id: 1,
       fullName: 'John Doe',
-      username: 'johndoe',
-      password: 'admin',
+      username: 'hijaz',
+      password: 'semangka',
       avatar: `${import.meta.env.BASE_URL ?? '/'}images/avatars/avatar-1.png`,
       email: 'admin@demo.com',
       role: 'admin',

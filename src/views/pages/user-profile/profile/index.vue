@@ -1,4 +1,5 @@
 <script setup>
+import { $data } from '@/utils/api'
 import About from './About.vue'
 import ActivityTimeline from './ActivityTimeline.vue'
 import Connection from './Connection.vue'
@@ -10,7 +11,7 @@ const profileTabData = ref()
 
 const fetchAboutData = async () => {
   if (router.params.tab === 'profile') {
-    const data = await $api('/pages/profile', { query: { tab: router.params.tab } }).catch(err => console.log(err))
+    const data = await $data('/pages/profile', { query: { tab: router.params.tab } }).catch(err => console.log(err))
 
     profileTabData.value = data
   }

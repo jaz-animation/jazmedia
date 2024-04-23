@@ -1,5 +1,5 @@
-import { rest } from 'msw'
 import { db } from '@db/pages/profile/db'
+import { rest } from 'msw'
 
 export const handlerPagesProfile = [
   // GET /pages/profile

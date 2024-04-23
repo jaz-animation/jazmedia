@@ -351,6 +351,8 @@
     "watchWithFilter": true,
     "whenever": true,
     "useClipboardItems": true,
-    "useAbility": true
+    "useAbility": true,
+    "$data": true,
+    "$fetchTable": true
   }
 }
