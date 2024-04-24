@@ -50,7 +50,7 @@ const login = async () => {
         password: credentials.value.password,
       },
       onResponseError({ response }) {
-        errors.value = response._data.errors
+        errors.value.username = response._data.message
       },
     })
 
@@ -130,11 +130,12 @@ const onSubmit = () => {
             Welcome to <span class="text-capitalize"> {{ themeConfig.app.title }} </span>! 👋🏻
           </h4>
           <p class="mb-0">
-            Please sign-in to your account and start the adventure
+            Project Management System
           </p>
         </VCardText>
         <VCardText>
           <VAlert
+            class="d-none"
             color="primary"
             variant="tonal"
           >
@@ -181,7 +182,7 @@ const onSubmit = () => {
                     label="Remember me"
                   />
                   <RouterLink
-                    class="text-primary ms-2 mb-1"
+                    class="text-primary ms-2 mb-1 d-none"
                     :to="{ name: 'forgot-password' }"
                   >
                     Forgot Password?
