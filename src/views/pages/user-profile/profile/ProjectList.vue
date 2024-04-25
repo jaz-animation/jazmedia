@@ -1,106 +1,55 @@
 <script setup>
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { paginationMeta } from '@api-utils/paginationMeta'
-import figma from '@images/icons/project-icons/figma.png'
-import html5 from '@images/icons/project-icons/html5.png'
-import python from '@images/icons/project-icons/python.png'
 import react from '@images/icons/project-icons/react.png'
-import sketch from '@images/icons/project-icons/sketch.png'
-import vue from '@images/icons/project-icons/vue.png'
-import xamarin from '@images/icons/project-icons/xamarin.png'
+import { VDataTable } from 'vuetify/labs/VDataTable'
+
+// import figma from '@images/icons/project-icons/figma.png'
+// import html5 from '@images/icons/project-icons/html5.png'
+// import python from '@images/icons/project-icons/python.png'
+// import sketch from '@images/icons/project-icons/sketch.png'
+// import vue from '@images/icons/project-icons/vue.png'
+// import xamarin from '@images/icons/project-icons/xamarin.png'
+
+const paginationMeta = (options, total) => {
+  const start = (options.page - 1) * options.itemsPerPage + 1
+  const end = Math.min(options.page * options.itemsPerPage, total)
+  
+  return `Showing ${total === 0 ? 0 : start} to ${end} of ${total} entries`
+}
 
 // Project Table Header
 const projectTableHeaders = [
   {
-    title: 'Name',
-    key: 'name',
+    title: 'theme',
+    key: 'theme',
   },
   {
-    title: 'LEADER',
-    key: 'leader',
+    title: 'subject',
+    key: 'subject',
   },
   {
-    title: 'PROGRESS',
-    key: 'progress',
+    title: 'status',
+    key: 'status',
   },
   {
-    title: 'Action',
-    key: 'Action',
+    title: 'action',
+    key: 'action',
     sortable: false,
   },
 ]
 
-const projects = [
-  {
-    logo: react,
-    name: 'BGC eCommerce App',
-    project: 'React Project',
-    leader: 'Eileen',
-    progress: 78,
-    hours: '18:42',
-  },
-  {
-    logo: figma,
-    name: 'Falcon Logo Design',
-    project: 'Figma Project',
-    leader: 'Owen',
-    progress: 25,
-    hours: '20:42',
-  },
-  {
-    logo: vue,
-    name: 'Dashboard Design',
-    project: 'Vuejs Project',
-    leader: 'Keith',
-    progress: 62,
-    hours: '120:87',
-  },
-  {
-    logo: xamarin,
-    name: 'Foodista mobile app',
-    project: 'Xamarin Project',
-    leader: 'Merline',
-    progress: 8,
-    hours: '120:87',
-  },
-  {
-    logo: python,
-    name: 'Dojo Email App',
-    project: 'Python Project',
-    leader: 'Harmonia',
-    progress: 51,
-    hours: '230:10',
-  },
-  {
-    logo: sketch,
-    name: 'Blockchain Website',
-    project: 'Sketch Project',
-    leader: 'Allyson',
-    progress: 92,
-    hours: '342:41',
-  },
-  {
-    logo: html5,
-    name: 'Hoffman Website',
-    project: 'HTML Project',
-    leader: 'Georgie',
-    progress: 80,
-    hours: '12:45',
-  },
-]
+const projects = ref([])
 
-const resolveUserProgressVariant = progress => {
-  if (progress <= 25)
-    return 'error'
-  if (progress > 25 && progress <= 50)
-    return 'warning'
-  if (progress > 50 && progress <= 75)
-    return 'primary'
-  if (progress > 75 && progress <= 100)
-    return 'success'
-  
-  return 'secondary'
+const fetchProjectData = async () => {
+  try {
+    const { data } = await $api('/project')
+
+    projects.value = data.data
+  } catch (error) {
+    console.error('Gagal mendapatkan data projek:', error)
+  }
 }
+
+fetchProjectData()
 
 const search = ref('')
 
@@ -156,45 +105,37 @@ const moreList = [
       @update:options="options = $event"
     >
       <!-- projects -->
-      <template #item.name="{ item }">
+      <template #item.theme="{ item }">
         <div class="d-flex align-center">
           <VAvatar
             :size="38"
             class="me-3"
           >
             <VImg
-              :src="item.logo"
+              :src="react"
               size="28"
             />
           </VAvatar>
           <div>
             <p class="font-weight-medium mb-0">
-              {{ item.name }}
+              {{ item.theme }}
             </p>
             <p class="text-sm text-disabled mb-0">
-              {{ item.project }}
+              {{ item.subject }}
             </p>
           </div>
         </div>
       </template>
 
-      <!-- Progress -->
-      <template #item.progress="{ item }">
+      <!-- status -->
+      <template #item.status="{ item }">
         <div class="d-flex align-center gap-3">
-          <div class="flex-grow-1">
-            <VProgressLinear
-              :height="6"
-              :model-value="item.progress"
-              rounded
-              :color="resolveUserProgressVariant(item.progress)"
-            />
-          </div>
-          <span>{{ item.progress }}%</span>
+          <span>{{ item.status }}</span>
         </div>
       </template>
 
-      <!-- Action -->
-      <template #item.Action>
+      <!-- action -->
+      <template #item.action>
         <MoreBtn
           :color="undefined"
           :menu-list="moreList"
@@ -202,6 +143,7 @@ const moreList = [
       </template>
 
       <!-- TODO Refactor this after vuetify provides proper solution for removing default footer -->
+      
       <template #bottom>
         <VDivider />
 

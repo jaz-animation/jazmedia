@@ -21,46 +21,73 @@ definePage({
   },
 })
 
-const selectedOption = ref({
-  state: 'Florida',
-  abbr: 'FL',
+const item = ref({
+  id: '',
+  name: '',
 })
 
-const items = [
-  {
-    state: 'Florida',
-    abbr: 'FL',
-  },
-  {
-    state: 'Georgia',
-    abbr: 'GA',
-  },
-  {
-    state: 'Nebraska',
-    abbr: 'NE',
-  },
-  {
-    state: 'California',
-    abbr: 'CA',
-  },
-  {
-    state: 'New York',
-    abbr: 'NY',
-  },
-]
+const students = ref([])
+const items = ref([])
+const isPasswordVisible = ref(false)
+
+const fetchProjectData = async () => {
+  try {
+    const { data } = await $api('/list/student')
+
+    students.value = data.data
+
+    // Add items from students to the items array
+    students.value.forEach(student => {
+      items.value.push({
+        id: student.id,
+        name: student.name,
+      })
+    })
+
+  } catch (error) {
+    console.error('Gagal mendapatkan data projek:', error)
+  }
+}
+
+fetchProjectData()
 
 const form = ref({
   name: '',
   username: '',
   password: '',
-  division: 'Sekolah',
-  position: 'Member',
-  role: '0',
-  image: '',
+  student: '',
   privacyPolicies: false,
 })
 
-const isPasswordVisible = ref(false)
+const register = async () => {
+  try {
+    await $api('/register', {
+      method: 'POST',
+      body: {
+        name: form.value.student.name,
+        username: form.value.username,
+        password: form.value.password,
+        division: 'Sekolah',
+        position: 'Member',
+        role: '0',
+        image: form.value.student.id,
+      },
+      onResponseError({ response }) {
+        errors.value.username = response._data.message
+      },
+    })
+
+    alert('Terimakasih.. Silahkan kembali ke halaman Login..')
+  } catch (err) {
+    alert(err)
+  }
+}
+
+const data = ref({})
+
+const onSubmit = () => {
+  register()
+}
 </script>
 
 <template>
@@ -113,21 +140,19 @@ const isPasswordVisible = ref(false)
         </VCardText>
 
         <VCardText>
-          <VForm @submit.prevent="() => {}">
+          <VForm @submit.prevent="onSubmit">
             <VRow>
               <!-- name -->
               <VCol cols="12">
                 <AppSelect
-                  v-model="selectedOption"
-                  :hint="`${selectedOption.state}, ${selectedOption.abbr}`"
+                  v-model="form.student"
                   :items="items"
-                  item-text="state"
-                  item-value="abbr"
-                  label="Select"
-                  persistent-hint
+                  :rules="[requiredValidator]"
+                  item-title="name"
+                  item-value="id"
+                  label="Name"
+                  placeholder="Select Member Name"
                   return-object
-                  single-line
-                  placeholder="Select State"
                 />
               </VCol>
 
@@ -185,12 +210,12 @@ const isPasswordVisible = ref(false)
                 cols="12"
                 class="text-center text-base"
               >
-                <span>Already have an account?</span>
+                <span>Sudah daftar?</span>
                 <RouterLink
                   class="text-primary ms-2"
                   :to="{ name: 'login' }"
                 >
-                  Sign in instead
+                  Login
                 </RouterLink>
               </VCol>
 

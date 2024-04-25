@@ -7,7 +7,7 @@ const $api = ofetch.create({
     if (accessToken) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${accessToken.message}`,
+        Authorization: `Bearer ${accessToken}`,
       }
     }
   },
@@ -20,21 +20,10 @@ const $data = ofetch.create({
     if (accessToken) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${accessToken.message}`,
+        Authorization: `Bearer ${accessToken}`,
       }
     }
   },
 })
 
-const $fetchTable = async param => {
-  try {
-    const { data } = await $api('/' + String(param))
-    
-    return data.data
-  } catch (error) {
-    console.error('Terjadi kesalahan:', error)
-    throw error
-  }
-}
-
-export { $api, $data, $fetchTable }
+export { $api, $data }

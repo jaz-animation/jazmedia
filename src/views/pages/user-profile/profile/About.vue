@@ -55,30 +55,6 @@ const props = defineProps({
           </VListItemTitle>
         </VListItem>
       </VList>
-
-      <p class="text-xs mt-5">
-        TEAMS
-      </p>
-
-      <VList class="card-list text-medium-emphasis">
-        <VListItem
-          v-for="item in props.data.teams"
-          :key="item.property"
-        >
-          <template #prepend>
-            <VIcon
-              :icon="item.icon"
-              size="20"
-              :color="item.color"
-              class="me-2"
-            />
-          </template>
-          <VListItemTitle>
-            <span class="font-weight-medium me-1">{{ item.property }}:</span>
-            <span>{{ item.value }}</span>
-          </VListItemTitle>
-        </VListItem>
-      </VList>
     </VCardText>
   </VCard>
 

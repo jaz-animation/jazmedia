@@ -1,5 +1,20 @@
 <script setup>
-import avatar2 from '@images/avatars/avatar-2.png'
+import { ref } from 'vue'
+
+const avatar2 = import.meta.env.VITE_API_IMAGE_URL + '/guru/'
+const tasks = ref([])
+
+const fetchProjectData = async () => {
+  try {
+    const { data } = await $api('/task')
+
+    tasks.value = data.data
+  } catch (error) {
+    console.error('Gagal mendapatkan data projek:', error)
+  }
+}
+
+fetchProjectData()
 </script>
 
 <template>
@@ -9,7 +24,7 @@ import avatar2 from '@images/avatars/avatar-2.png'
         <VIcon icon="tabler-timeline" />
       </template>
 
-      <VCardTitle>Activity Timeline</VCardTitle>
+      <VCardTitle>Timeline Task</VCardTitle>
 
       <template #append>
         <div>
@@ -32,101 +47,54 @@ import avatar2 from '@images/avatars/avatar-2.png'
         class="v-timeline-density-compact"
       >
         <VTimelineItem
-          dot-color="warning"
+          v-for="task in tasks"
+          :key="task.id"
+          :dot-color="task.status == 'Not Started' ? 'warning' : (task.status == 'In Progress' ? 'success' : (task.status == 'Completed' ? 'primary' : 'error'))"
           size="x-small"
         >
           <div class="d-flex justify-space-between align-center flex-wrap">
             <span class="app-timeline-title">
-              Client Meeting
+              {{ task?.name }}
             </span>
-            <span class="app-timeline-meta">Today</span>
+            <span class="app-timeline-meta">{{ task?.student_name }}</span>
           </div>
           <p class="app-timeline-text mb-2">
-            Project meeting with john @10:15am
+            {{ task?.project_name }}
           </p>
 
-          <div class="d-flex align-center mt-3">
+          <div
+            v-if="task?.accepted == 1"
+            class="d-flex align-center mt-3"
+          >
             <VAvatar
               size="38"
               class="me-3"
-              :image="avatar2"
+              :image="avatar2+task?.teacher_id+'.png'"
             />
             <div>
               <h6 class="text-sm font-weight-medium mb-n1">
-                Lester McCarthy (Client)
+                Accepted by: {{ task?.teacher_name }}
               </h6>
               <span class="app-timeline-meta">
-                CEO of Infidel
+                {{ task?.review }}
               </span>
             </div>
           </div>
-        </VTimelineItem>
 
-        <VTimelineItem
-          dot-color="primary"
-          size="x-small"
-        >
-          <div class="d-flex justify-space-between align-center flex-wrap">
-            <span class="app-timeline-title">
-              Create a new project for client 😎
-            </span>
-            <span class="app-timeline-meta">2 Day Ago</span>
-          </div>
-
-          <p class="app-timeline-text mb-1">
-            Add files to new design folder
-          </p>
-        </VTimelineItem>
-
-        <VTimelineItem
-          dot-color="info"
-          size="x-small"
-        >
-          <div class="d-flex justify-space-between align-center flex-wrap">
-            <span class="app-timeline-title">
-              Shared 2 New Project Files
-            </span>
-            <span class="app-timeline-meta">6 Day Ago</span>
-          </div>
-          <p class="app-timeline-text mb-0">
-            Sent by Mollie Dixon
-          </p>
-          <div class="d-flex align-center mt-3">
+          <div
+            v-else
+            class="d-flex align-center mt-3"
+          >
             <VIcon
-              color="warning"
-              icon="tabler-file-text"
+              :color="task.teacher_id == null ? 'warning' : 'success'"
+              :icon="task.teacher_id == null ? 'tabler-alert-triangle' : 'tabler-file-text'"
               size="20"
               class="me-2"
             />
             <h6 class="font-weight-medium text-xs me-3">
-              App Guidelines
-            </h6>
-
-            <VIcon
-              color="success"
-              icon="tabler-table"
-              size="20"
-              class="me-2"
-            />
-            <h6 class="font-weight-medium text-xs">
-              Testing Results
+              {{ task?.review }}
             </h6>
           </div>
-        </VTimelineItem>
-
-        <VTimelineItem
-          dot-color="secondary"
-          size="x-small"
-        >
-          <div class="d-flex justify-space-between align-center flex-wrap">
-            <span class="app-timeline-title">
-              Project status updated
-            </span>
-            <span class="app-timeline-meta">10 Day Ago</span>
-          </div>
-          <p class="app-timeline-text mb-1">
-            WooCommerce iOS App Completed
-          </p>
         </VTimelineItem>
       </VTimeline>
     </VCardText>

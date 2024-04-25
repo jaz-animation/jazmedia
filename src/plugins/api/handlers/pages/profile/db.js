@@ -17,46 +17,36 @@ import vueLabel from '@images/icons/project-icons/vue.png'
 import xdLabel from '@images/icons/project-icons/xd.png'
 import UserProfileHeaderBg from '@images/pages/user-profile-header-bg.png'
 
-// $fetchTable('user')
-//   .then(projectData => {
-//     console.log(projectData)
-//   })
-//   .catch(error => {
-//     console.error('Terjadi kesalahan:', error)
-//   })
-
+const imgUrl = import.meta.env.VITE_API_IMAGE_URL + '/member/'
+var student = useCookie('userData').value
 
 export const db = {
   data: {
     profileHeader: {
-      fullName: 'John Doe',
-      location: 'Vatican City',
-      joiningDate: 'April 2021',
-      designation: 'UX Designer',
-      profileImg: avatar1,
+      fullName: student?.name,
+      location: student?.birth_place,
+      joiningDate: student?.registered,
+      designation: student?.role,
+      profileImg: `${imgUrl + student?.id}.png`,
       coverImg: UserProfileHeaderBg,
     },
     profile: {
       about: [
-        { property: 'Full Name', value: 'John Doe', icon: 'tabler-user' },
-        { property: 'Status', value: 'active', icon: 'tabler-check' },
-        { property: 'Role', value: 'Developer', icon: 'tabler-star' },
-        { property: 'Country', value: 'USA', icon: 'tabler-flag' },
-        { property: 'Language', value: 'English', icon: 'tabler-language' },
+        { property: 'NID', value: student?.nis, icon: 'tabler-user' },
+        { property: 'Status', value: 'Active', icon: 'tabler-check' },
+        { property: 'Gender', value: student?.gender, icon: 'tabler-star' },
+        { property: 'Tanggal Lahir', value: student?.birth_date, icon: 'tabler-flag' },
+        { property: 'Daerah', value: student?.birth_place, icon: 'tabler-language' },
       ],
       contacts: [
-        { property: 'Contact', value: '(123) 456-7890', icon: 'tabler-phone' },
-        { property: 'Skype', value: 'john.doe', icon: 'tabler-message' },
-        { property: 'Email', value: 'john.doe@example.com', icon: 'tabler-mail' },
-      ],
-      teams: [
-        { property: 'Backend Developer', value: '(126 Members)', icon: 'tabler-brand-github', color: 'secondary' },
-        { property: 'VueJS Developer', value: '(98 Members)', icon: 'tabler-brand-vue', color: 'success' },
+        { property: 'Phone', value: student?.own_phone || student?.phone, icon: 'tabler-phone' },
+        { property: 'Email', value: student?.email, icon: 'tabler-mail' },
+        { property: 'Instagram', value: student?.instagram, icon: 'tabler-brand-instagram' },
       ],
       overview: [
-        { property: 'Task Compiled', value: '13.5k', icon: 'tabler-check' },
-        { property: 'Connections', value: '897', icon: 'tabler-user' },
-        { property: 'Projects Compiled', value: '146', icon: 'tabler-layout-grid' },
+        { property: 'Hobby', value: student?.hobby, icon: 'tabler-check' },
+        { property: 'Sport', value: student?.sport, icon: 'tabler-user' },
+        { property: 'Goal', value: student?.ambition, icon: 'tabler-layout-grid' },
       ],
       connections: [
         {
@@ -157,7 +147,7 @@ export const db = {
         avatar: vueLabel,
         avatarGroup: [
           { avatar: avatar5, name: 'Kaith D\'souza' },
-          { avatar: avatar6, name: 'John Doe' },
+          { avatar: avatar6, name: student?.name },
           { avatar: avatar7, name: 'Alan Walker' },
           { avatar: avatar8, name: 'Calvin Middleton' },
         ],
@@ -340,7 +330,7 @@ export const db = {
         avatar: reactLabel,
         avatarGroup: [
           { avatar: avatar4, name: 'Kaith D\'souza' },
-          { avatar: avatar5, name: 'John Doe' },
+          { avatar: avatar5, name: student?.name },
           { avatar: avatar6, name: 'Alan Walker' },
         ],
         description: 'Time is our most valuable asset, that\'s why we want to help you save it by creating…',

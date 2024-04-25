@@ -3,14 +3,17 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 const router = useRouter()
 const ability = useAbility()
+const imgUrl = import.meta.env.VITE_API_IMAGE_URL + '/member/'
 
 // TODO: Get type from backend
-const userData = useCookie('userData')
+const userData = useCookie('userData').value
+const userAvatar = `${imgUrl + userData.id}.png`
 
-const logout = async () => {
+async function logout() {
 
   // Remove "accessToken" from cookie
   useCookie('accessToken').value = null
+  useCookie('userData').value = null
 
   // Remove "userData" from cookie
   userData.value = null
@@ -19,7 +22,6 @@ const logout = async () => {
   await router.push('/login')
 
   // ℹ️ We had to remove abilities in then block because if we don't nav menu items mutation is visible while redirecting user to login page
-
   // Remove "userAbilities" from cookie
   useCookie('userAbilityRules').value = null
 
@@ -72,12 +74,12 @@ const userProfileList = [
   >
     <VAvatar
       class="cursor-pointer"
-      :color="!(userData && userData.avatar) ? 'primary' : undefined"
-      :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
+      :color="!(userData) ? 'primary' : undefined"
+      :variant="!(userData) ? 'tonal' : undefined"
     >
       <VImg
-        v-if="userData && userData.avatar"
-        :src="userData.avatar"
+        v-if="userData"
+        :src="userAvatar"
       />
       <VIcon
         v-else
@@ -104,12 +106,12 @@ const userProfileList = [
                   bordered
                 >
                   <VAvatar
-                    :color="!(userData && userData.avatar) ? 'primary' : undefined"
-                    :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
+                    :color="!(userData) ? 'primary' : undefined"
+                    :variant="!(userData) ? 'tonal' : undefined"
                   >
                     <VImg
-                      v-if="userData && userData.avatar"
-                      :src="userData.avatar"
+                      v-if="userData"
+                      :src="userAvatar"
                     />
                     <VIcon
                       v-else
@@ -121,9 +123,9 @@ const userProfileList = [
             </template>
 
             <VListItemTitle class="font-weight-medium">
-              {{ userData.fullName || userData.username }}
+              {{ userData.name }}
             </VListItemTitle>
-            <VListItemSubtitle>{{ userData.role }}</VListItemSubtitle>
+            <VListItemSubtitle>{{ userData.nis }}</VListItemSubtitle>
           </VListItem>
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">

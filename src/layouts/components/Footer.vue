@@ -12,26 +12,22 @@
         class="mx-1"
       />
       By <a
-        href="https://pixinvent.com"
+        href="http://semangkamedia.epizy.com"
         target="_blank"
         rel="noopener noreferrer"
         class="text-primary ms-1"
-      >Pixinvent</a>
+      >Semangkamedia</a>
     </span>
     <!-- 👉 Footer: right content -->
     <span class="d-md-flex gap-x-4 text-primary d-none">
       <a
-        href="https://themeforest.net/licenses/standard"
+        href="https://abukafa.github.io"
         target="noopener noreferrer"
-      >License</a>
-      <a
-        href="https://1.envato.market/pixinvent_portfolio"
-        target="noopener noreferrer"
-      >More Themes</a>
+      >Developer</a>
       <a
         href="https://demos.pixinvent.com/vuexy-vuejs-admin-template/documentation/"
         target="noopener noreferrer"
-      >Documentation</a>
+      >Templates</a>
     </span>
   </div>
 </template>

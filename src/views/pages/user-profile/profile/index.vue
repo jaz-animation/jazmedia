@@ -2,9 +2,7 @@
 import { $data } from '@/utils/api'
 import About from './About.vue'
 import ActivityTimeline from './ActivityTimeline.vue'
-import Connection from './Connection.vue'
 import ProjectList from './ProjectList.vue'
-import Teams from './Teams.vue'
 
 const router = useRoute('pages-user-profile-tab')
 const profileTabData = ref()
@@ -36,20 +34,6 @@ watch(router, fetchAboutData, { immediate: true })
       <VRow>
         <VCol cols="12">
           <ActivityTimeline />
-        </VCol>
-
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <Connection :connections-data="profileTabData.connections" />
-        </VCol>
-
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <Teams :teams-data="profileTabData.teamsTech" />
         </VCol>
 
         <VCol cols="12">

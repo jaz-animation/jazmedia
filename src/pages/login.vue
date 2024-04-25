@@ -54,9 +54,9 @@ const login = async () => {
       },
     })
 
-    const accessToken = res
+    const accessToken = res.accessToken
 
-    const userData = credentials.value.username
+    const userData = res.userData
 
     const userAbilityRules = [
       {
@@ -202,12 +202,12 @@ const onSubmit = () => {
                 cols="12"
                 class="text-center"
               >
-                <span>New on our platform?</span>
+                <span>Belum daftar?</span>
                 <RouterLink
                   class="text-primary ms-2"
                   :to="{ name: 'register' }"
                 >
-                  Create an account
+                  Sign up
                 </RouterLink>
               </VCol>
               <VCol
